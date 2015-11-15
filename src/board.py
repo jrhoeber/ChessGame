@@ -36,23 +36,32 @@ class Board():
             for i in range(piece.get_x(), newX):
                 if i != piece.get_x() and gameBoard[y][i]:
                     return False       
-            takeLastPiece(piece, newX, newY) 
+            return takeLastPiece(piece, newX, newY) 
 
         elif(y == newY):
             for i in range(piece.get_y(), newY):
                 if i != piece.get_y() and gameBoard[i][x]:
                     return False
-            takeLastPiece(piece, newX, newY)
+            return takeLastPiece(piece, newX, newY)
 
         elif(piece.get_name() == "Knight"):
-            takeLastPiece(piece, newX, newY)
+            return takeLastPiece(piece, newX, newY)
 
         else:
+            xDir = piece.get_x() < newX ? 1 : 0
+            yDir = piece.get_y() < newY ? 1 : 0
+            lateralDist = abs(newX - piece.get_x())
+            for i in range(0, distance):
+                if(i != 0 and gameBoard[piece.get_y() + yDir * i][piece.get_x() + xDir * i]):
+                    return false
+            return takeLastPiece(piece, newX, newY)
+                 
 
     def takeLastPiece(piece, newX, newY):
         if(gameBoard[newY][newX] and gameBoard[newY][newX].get_color() == piece.get_color()):
             return False
         else:
+            
             return True      
 
 
