@@ -44,41 +44,44 @@ class Board():
             for i in range(piece.get_x(), newX):
                 if i != piece.get_x() and self.board[i][y]:
                     return False       
-            return self.takeLastPiece(piece, newX, newY) 
+            return self.takeLastPiece(piece, newX, newY, False) 
 
         #Vertical
         elif(y == newY):
             for i in range(piece.get_y(), newY):
                 if i != piece.get_y() and self.board[x][i]:
                     return False
-            return self.takeLastPiece(piece, newX, newY)
+            return self.takeLastPiece(piece, newX, newY, False)
 
         #Knight
         elif(piece.get_name() == "Knight"):
-            return self.takeLastPiece(piece, newX, newY)
+            return self.takeLastPiece(piece, newX, newY, False)
 
         #Diagonal (Still must check for pawn diagonal)
         else:
             xDir = 1 if(piece.get_x() < newX) else 0
             yDir = 1 if(piece.get_y() < newY) else 0
             lateralDist = abs(newX - piece.get_x())
-            for i in range(0, distance):
+            for i in range(0, lateralDist):
                 if(i != 0 and self.board[piece.get_x() + xDir * i][piece.get_y() + yDir * i]):
                     return False
-            return self.takeLastPiece(piece, newX, newY)
+            return self.takeLastPiece(piece, newX, newY, piece.get_name() == "Pawn")
                  
 
-    def takeLastPiece(self, piece, newX, newY):
-        if(self.board[newX][newY] != 0 and self.board[newX][newY].get_color() == piece.get_color()):
+    def takeLastPiece(self, piece, newX, newY, isPawnDiag):
+        if(isPawnDiag):
+            if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() == piece.getColor()):
+                return False 
+        elif(self.board[newX][newY] != 0 and self.board[newX][newY].get_color() == piece.get_color()):
             return False
-        else:
-            self.board[piece.get_x()][piece.get_y()] = 0
-            self.board[newX][newY] = piece
-            piece.update_coordinate(newX, newY)
-            '''
-                Put actual movement of piece here
-            '''           
-            return True      
+        
+        self.board[piece.get_x()][piece.get_y()] = 0
+        self.board[newX][newY] = piece
+        piece.update_coordinate(newX, newY)
+        '''
+            Put actual movement of piece here
+        '''           
+        return True      
 
 
 
