@@ -9,8 +9,8 @@ Adafruit_StepperMotor *yMotor = AFMS.getStepper(200, 2);
 
 int displacement = 130;
 int displacementL = 160;
-int displacementDiag = 184;
-int displacementDiagL = 226;
+int displacementDiag = 130;
+int displacementDiagL = 160;
 int currX = 0;
 int currY = 0;
 int magPin = 7;
@@ -19,28 +19,29 @@ bool magOn = false;
 bool moveBy(int x, int y);
 
 void setup() {
-  Serial.begin(57600);
+  Serial.begin(9600);
   pinMode(magPin, OUTPUT);
   AFMS.begin();
   
   xMotor->setSpeed(40);
   yMotor->setSpeed(40);
-  int xdir = 0;
+  /*for(int i = 0; i < 5*displacementDiag; i++)
+      {
+        xMotor->step(1, BACKWARD, DOUBLE); 
+        yMotor->step(1, BACKWARD, DOUBLE);
+      }*/
+  //yMotor->step(10, FORWARD, DOUBLE);
+  //xMotor->step(50, BACKWARD, DOUBLE);
 }
 
 void loop() {
-/*  xMotor->step(100, FORWARD, DOUBLE);
-  xMotor->step(100, BACKWARD, DOUBLE); 
-  yMotor->step(100, FORWARD, DOUBLE);
-  yMotor->step(100, BACKWARD, DOUBLE);*/
-
   if (Serial.available() > 3) {
-    byte oposx = Serial.read();
-    byte oposy = Serial.read();
-    byte nposx = Serial.read();
-    byte nposy = Serial.read();
+    byte oposx = Serial.read() - 48;
+    byte oposy = Serial.read() - 48;
+    byte nposx = Serial.read() - 48;
+    byte nposy = Serial.read() - 48;
 
-    //Serial.write(oposx);
+    //Serial.print(oposx);
     //Serial.write(oposy);
     //Serial.write(nposx);
     //Serial.write(nposy);
@@ -60,9 +61,13 @@ void loop() {
 
 bool moveBy(int x, int y)
 {
-  Serial.println("MoveBy");
+  if(x == 0 && y == 0){
+    return false;
+  }
   int xDir = (x < 0) + 1;
   int yDir = (y < 0) + 1;
+  Serial.println(xDir);
+  Serial.println(yDir);
   if(abs(x) == abs(y))
   {
     if(magOn){  
@@ -104,7 +109,34 @@ bool moveBy(int x, int y)
     {
       yMotor->step(y*displacement, yDir, DOUBLE);
     }
-  } else{
+  } else if(!magOn)
+  {
+    if(x < y)
+    {
+      for(int i = 0; i < x; i++){
+        xMotor->step(1, xDir, DOUBLE);
+        yMotor->step(1, yDir, DOUBLE);
+        x--;
+        y--;
+      }
+      for(int i = 0; i < y; i++){
+        yMotor->step(1, yDir, DOUBLE);
+      }
+    }
+    else if(x > y)
+    {
+      for(int i = 0; i < y; i++){
+        xMotor->step(1, xDir, DOUBLE);
+        yMotor->step(1, yDir, DOUBLE);
+        x--;
+        y--;
+      }
+      for(int i = 0; i < x; i++){
+        yMotor->step(1, yDir, DOUBLE);
+      }
+    }
+  } else
+  {
     return false;
   }
   return true;
