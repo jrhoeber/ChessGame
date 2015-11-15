@@ -1,25 +1,25 @@
-#import speech_recognition as sr 
-#import pyaudio
+import speech_recognition as sr 
+import pyaudio
 
 validSet = set(["A", "B", "C", "D", "E", "F", "G", "H"]) 
 
 def getMove():
 
-  #r = sr.Recognizer()
-  #with sr.Microphone() as source:
-   # print("Say Something")
-   # r.adjust_for_ambient_noise(source)
-    #audio = r.listen(source)
-    #print("Got something")
-  #try:
-     #command = r.recognize_google(audio)
+  r = sr.Recognizer()
+  with sr.Microphone() as source:
+    print("Say Something")
+    r.adjust_for_ambient_noise(source)
+    audio = r.listen(source)
+    print("Got something")
+  try:
+     command = r.recognize_google(audio)
      #command = "23affafafaffaA8"
-     command = raw_input("Enter your move: ")
+     #command = raw_input("Enter your move: ")
      return convertMove(command)
-  #except sr.UnknownValueError:
-  #  print("Google Speech Recognition couldn't understand audio")
-  #except sr.RequestError as e:
-  #  print("Could not request results from GSR service; {0}".format(e)) 
+  except sr.UnknownValueError:
+    print("Google Speech Recognition couldn't understand audio")
+  except sr.RequestError as e:
+    print("Could not request results from GSR service; {0}".format(e)) 
 
 #Currently assuming valid string
 def convertMove(command):
@@ -38,4 +38,4 @@ def convertMove(command):
   except Exception as e:
     print e.message
     return ()
-
+print getMove()
