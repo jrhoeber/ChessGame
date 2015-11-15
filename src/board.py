@@ -55,7 +55,34 @@ class Board():
 
         #Knight
         elif(piece.get_name() == "Knight"):
-            return self.takeLastPiece(piece, newX, newY, False)
+            if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() != piece.get_color()):
+                
+                if(abs(piece.get_x() - newX) == 2):
+                    dir = 1 if(piece.get_x() < newX) else -1
+                    coordinates = move_for_knight(x + dir, y, newX, newY)
+                else:
+                    dir = 1 if(piece.get_y() < newY) else -1
+                    coordinates = move_for_knight(x, y + dir, newX, newY)
+                if(coordinates):
+                    if(self.board[newX][newY] != 0):
+                        move_piece_off_board(newX, newY)
+                else:
+                    return False 
+            else:
+                return False
+
+            if(abs(piece.get_x() - newX) == 2):
+                dir = 1 if(piece.get_x() < newX) else -1
+                move_piece_serial(x , y, x + dir, y)
+                move_piece_serial(x + dir, y, newX, newY)
+                piece.update_coordinates(newX, newY)
+            else:
+                dir = 1 if(piece.get_y() < newY) else -1
+                move_piece_serial(x, y, x, y + dir)
+                move_piece_serial(x,  y + dir, newX, newY)
+                piece.update_coordinates(newX, newY)
+            
+            move_piece_serial(coordinates[2], coordinates[3], coordinates[0], coordinates[1])
 
         #Diagonal
         else:
@@ -76,12 +103,32 @@ class Board():
             return False
         
         self.board[piece.get_x()][piece.get_y()] = 0
+        if(self.board[newX][newY] != 0):
+            pass
+            #Handle move off board    
+        move_piece_serial(piece.get_x(), piece.get_y(), newX, newY)
         self.board[newX][newY] = piece
         piece.update_coordinate(newX, newY)
-        '''
-            Put actual movement of piece here
-        '''           
         return True      
+
+    #Pass coordinates for serial movement
+    def move_piece_serial(self, x, y, newX, newY):
+        self.board[x][y] = 0
+        pass
+
+    def move_piece_off_board(newX, newY):
+        self.board[newX][newY] = 0
+        pass
+ 
+    def move_for_knight(x, y, finalX, finalY):
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if(self.board[i][j] == 0 and x != finalX and j != finalY):   
+                    move_piece_serial(x, y, i, j)
+                    return (x, y, i, j)
+        print("Currently can't make room for the knight")
+        return() 
+
 
 
 
