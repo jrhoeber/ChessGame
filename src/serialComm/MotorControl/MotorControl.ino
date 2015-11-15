@@ -25,13 +25,14 @@ void setup() {
   
   xMotor->setSpeed(40);
   yMotor->setSpeed(40);
-  /*for(int i = 0; i < 5*displacementDiag; i++)
+  /*for(int i = 0; i < 6*displacementDiag; i++)
       {
         xMotor->step(1, BACKWARD, DOUBLE); 
         yMotor->step(1, BACKWARD, DOUBLE);
       }*/
-  //yMotor->step(10, FORWARD, DOUBLE);
-  //xMotor->step(50, BACKWARD, DOUBLE);
+  
+  //xMotor->step(displacement*1, BACKWARD, DOUBLE);
+  //yMotor->step(5, BACKWARD, DOUBLE);
 }
 
 void loop() {
@@ -42,13 +43,10 @@ void loop() {
     byte nposy = Serial.read() - 48;
 
     //Serial.print(oposx);
-    //Serial.write(oposy);
-    //Serial.write(nposx);
-    //Serial.write(nposy);
-    if(!moveBy(oposx - currX, oposy - currY))
-    {
-      return;
-    }
+    //Serial.print(oposy);
+    //Serial.print(nposx);
+    //Serial.print(nposy);
+    moveBy(oposx - currX, oposy - currY);
     digitalWrite(magPin, HIGH);
     magOn = true;
     moveBy(nposx - oposx, nposy - oposy);
@@ -56,6 +54,7 @@ void loop() {
     magOn = false;
     currX = nposx;
     currY = nposy;
+    Serial.println("DONE");
   }  
 }
 
@@ -66,9 +65,11 @@ bool moveBy(int x, int y)
   }
   int xDir = (x < 0) + 1;
   int yDir = (y < 0) + 1;
-  Serial.println(xDir);
-  Serial.println(yDir);
-  if(abs(x) == abs(y))
+  //Serial.println(xDir);
+  //Serial.println(yDir);
+  x = abs(x);
+  y = abs(y);
+  if(x == y)
   {
     if(magOn){  
       for(int i = 0; i < displacementDiagL; i++)
@@ -89,7 +90,7 @@ bool moveBy(int x, int y)
        yMotor->step(1, yDir, DOUBLE);
       }
     }
-  } else if(x > 0 && y == 0)
+  } else if(x != 0 && y == 0)
   {
     if(magOn)
     {
@@ -99,7 +100,7 @@ bool moveBy(int x, int y)
     {
       xMotor->step(x*displacement, xDir, DOUBLE);
     }
-  } else if(y > 0 && x == 0)
+  } else if(y != 0 && x == 0)
   {
     if(magOn)
     {
@@ -111,6 +112,8 @@ bool moveBy(int x, int y)
     }
   } else if(!magOn)
   {
+    x = x*displacement;
+    y = y*displacement;
     if(x < y)
     {
       for(int i = 0; i < x; i++){

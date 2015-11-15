@@ -1,5 +1,5 @@
 from piece import *
-import SerialComm
+from SerialComm import *
 
 class Board():
 

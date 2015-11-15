@@ -12,11 +12,6 @@ class SerialComm:
         self.arduinoSerial.write(s[1])
         self.arduinoSerial.write(s[2])
         self.arduinoSerial.write(s[3])
-    
+        self.arduinoSerial.read() 
     def closeConnection(self):
         self.arduinoSerial.close()
-
-s = SerialComm()
-s.moveToPosition([1,1], [3,3])
-
-
