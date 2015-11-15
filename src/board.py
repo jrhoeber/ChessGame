@@ -39,24 +39,23 @@ class Board():
         elif(not piece.move(newX, newY)):
             return False
  
-        #Horizontal
+        #Vertical
         if(x == newX):
-            for i in range(piece.get_x(), newX):
-                if i != piece.get_x() and self.board[i][y]:
+            for i in range(piece.get_y(), newY):
+                if i != piece.get_y() and self.board[x][i]:
                     return False       
             return self.takeLastPiece(piece, newX, newY, False) 
 
-        #Vertical
+        #Horizontal
         elif(y == newY):
-            for i in range(piece.get_y(), newY):
-                if i != piece.get_y() and self.board[x][i]:
+            for i in range(piece.get_x(), newX):
+                if i != piece.get_x() and self.board[i][y]:
                     return False
             return self.takeLastPiece(piece, newX, newY, False)
 
         #Knight
         elif(piece.get_name() == "Knight"):
             if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() != piece.get_color()):
-                
                 if(abs(piece.get_x() - newX) == 2):
                     dir = 1 if(piece.get_x() < newX) else - 1
                     coordinates = self.move_for_knight(x + dir, y, newX, newY)
@@ -82,13 +81,10 @@ class Board():
                 self.move_piece_serial(x,  y + dir, newX, newY)
                 piece.update_coordinate(newX, newY)
             
-            print coordinates
-            
+            self.board[newX][newY] = piece
             if(len(coordinates) == 4):
+                self.board[coordinates[0]][coordinates[1]] = self.board[coordinates[2]][coordinates[3]]
                 self.move_piece_serial(coordinates[2], coordinates[3], coordinates[0], coordinates[1])
-                print coordinates[0]
-                print coordinates[1]
-                self.board[coordinates[0]][coordinates[1]] = piece
             return True
 
         #Diagonal
@@ -130,13 +126,29 @@ class Board():
     def move_for_knight(self, x, y, finalX, finalY):
         if(self.board[x][y] == 0):
             return (1, 2)
+        piece = self.board[x][y]
         for i in range(-1, 2):
             for j in range(-1, 2):
                 if(self.board[x + i][y + j] == 0 and (x + i != finalX or y + j != finalY)):   
                     self.move_piece_serial(x, y, x + i, y + j)
+                    self.board[x + i][y + j] = piece  
                     return (x, y, x + i, y + j)
         print("Currently can't make room for the knight")
         return() 
+
+    def printBoard(self):
+        for i in range(0, 8):
+            print ""
+            for j in range(0, 8):
+                if(self.board[j][7 - i] == 0):
+                    print("0"),
+                else:
+                    print(self.board[j][7 - i].get_name()[0]),
+
+
+
+
+
 
 
 

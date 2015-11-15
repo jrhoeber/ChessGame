@@ -79,7 +79,7 @@ class Pawn(Piece):
     def move(self, x, y):
         if self.color == "black":
             #this could be problematic
-            if self.moves == 0 and ((self.y-2 and self.x == x) or (y == self.y-1 and abs(x - self.x) <= 1)):
+            if self.moves == 0 and ((y == self.y-2 and self.x == x) or (y == self.y-1 and abs(x - self.x) <= 1)):
                 self.moves += 1
                 return True
             elif y == self.y-1 and abs(x - self.x) <= 1:
