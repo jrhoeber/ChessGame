@@ -107,7 +107,7 @@ class Board():
         
         self.board[piece.get_x()][piece.get_y()] = 0
         if(self.board[newX][newY] != 0):
-            pass
+            self.move_piece_off_board(newX, newY)
             #Handle move off board    
         self.move_piece_serial(piece.get_x(), piece.get_y(), newX, newY)
         self.board[newX][newY] = piece
@@ -120,7 +120,34 @@ class Board():
         pass
 
     def move_piece_off_board(self, newX, newY):
+        print "move off board"
+        left =0
+        right = 0
+        stack = []
+        for i in range(0, 8):
+            if i < newX and self.board[i][newY]:
+                left += 1
+            if i > newX and self.board[i][newY]:
+                right += 1
+        if left < right:
+            for i in range(0, newX):
+                if self.board[i][newY]:
+                    stack.append(self.move_for_knight(i, newY, i, newY))
+            self.move_piece_serial(newX, newY, -1, newY)        
+        else:
+            for i in range(newX+1, 8):
+                if self.board[i][newY]:
+                    stack.append(self.move_for_knight(i, newY, i, newY))
+            self.move_piece_serial(newX, newY, 9, newY)        
+
+        while stack:
+            temp = stack.pop()
+            self.board[temp[0]][temp[1]] = self.board[temp[2]][temp[3]]
+            self.move_piece_serial(temp[2], temp[3], temp[0], temp[1])          
+        
         self.board[newX][newY] = 0
+
+
         pass
  
     def move_for_knight(self, x, y, finalX, finalY):
