@@ -1,5 +1,3 @@
-MAX_INDEX = 7
-MIN_INDEX = 0
 class Piece(object):
     def __init__(self, x, y, color):
         self.x = x
@@ -108,20 +106,3 @@ def LetterToInt(letter):
     letters = "abcdefghi"
     return letters.index(letter.lower())
 
-def createBoard():
-    board = [[0 for x in xrange(8)] for x in xrange(8)]
-
-def MakeMove(cur_x, cur_y, new_x, new_y):
-    if 0 <= new_x <= 7 and 0 <= new_y <= 7:
-        print "Valid move!"
-        #valid move
-    else:
-        print "Invalid move!"   
-
-def main():
-    createBoard()
-    #x = Knight(1, 0, "white")
-    x = Bishop(LetterToInt("g"), 1-1, "white")
-    print x.move(LetterToInt("h"), 4-1)
-
-main()
