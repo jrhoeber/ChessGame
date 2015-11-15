@@ -16,3 +16,4 @@ class SerialComm:
 s = SerialComm()
 s.moveToPosition([1,2], [3,4])
 
+
