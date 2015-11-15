@@ -8,9 +8,9 @@ Adafruit_StepperMotor *xMotor = AFMS.getStepper(200, 1);
 Adafruit_StepperMotor *yMotor = AFMS.getStepper(200, 2);
 
 int displacement = 130;
-int displacementL = 160;
-int displacementDiag = 130;
-int displacementDiagL = 160;
+int displacementL = 130;
+int displacementDiag = 180;
+int displacementDiagL = 180;
 int currX = 0;
 int currY = 0;
 int magPin = 7;
@@ -32,7 +32,7 @@ void setup() {
       }*/
   
   //xMotor->step(displacement*1, BACKWARD, DOUBLE);
-  //yMotor->step(5, BACKWARD, DOUBLE);
+  //yMotor->step(displacement*6, BACKWARD, DOUBLE);
 }
 
 void loop() {
@@ -42,16 +42,18 @@ void loop() {
     byte nposx = Serial.read() - 48;
     byte nposy = Serial.read() - 48;
 
-    //Serial.print(oposx);
-    //Serial.print(oposy);
-    //Serial.print(nposx);
-    //Serial.print(nposy);
+    Serial.print(oposx);
+    Serial.print(oposy);
+    Serial.print(nposx);
+    Serial.print(nposy);
     moveBy(oposx - currX, oposy - currY);
     digitalWrite(magPin, HIGH);
     magOn = true;
+    delay(500);
     moveBy(nposx - oposx, nposy - oposy);
     digitalWrite(magPin, LOW);
     magOn = false;
+    delay(500);
     currX = nposx;
     currY = nposy;
     Serial.println("DONE");
@@ -65,11 +67,10 @@ bool moveBy(int x, int y)
   }
   int xDir = (x < 0) + 1;
   int yDir = (y < 0) + 1;
-  //Serial.println(xDir);
-  //Serial.println(yDir);
-  x = abs(x);
-  y = abs(y);
-  if(x == y)
+  Serial.println(xDir);
+  Serial.println(yDir);
+  x = abs(x); y = abs(y);
+  if(abs(x) == abs(y))
   {
     if(magOn){  
       for(int i = 0; i < displacementDiagL; i++)
@@ -90,7 +91,7 @@ bool moveBy(int x, int y)
        yMotor->step(1, yDir, DOUBLE);
       }
     }
-  } else if(x != 0 && y == 0)
+  } else if(x > 0 && y == 0)
   {
     if(magOn)
     {
@@ -100,11 +101,11 @@ bool moveBy(int x, int y)
     {
       xMotor->step(x*displacement, xDir, DOUBLE);
     }
-  } else if(y != 0 && x == 0)
+  } else if(y > 0 && x == 0)
   {
     if(magOn)
     {
-      yMotor->step((y-1)*displacement+displacementL, xDir, DOUBLE);
+      yMotor->step((y-1)*displacement+displacementL, yDir, DOUBLE);
     }
     else
     {
