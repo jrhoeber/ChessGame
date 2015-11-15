@@ -9,6 +9,13 @@ class Piece(object):
     def update_coordinate(x,y):
         self.x = x;
         self.y = y;
+    def get_x():
+        return self.x
+    def get_y():
+        return self.y
+    def get_color():
+        return self.color
+
     color = ""
     x = 0
     y = 0
@@ -110,6 +117,7 @@ def MakeMove(cur_x, cur_y, new_x, new_y):
         #valid move
     else:
         print "Invalid move!"   
+
 def main():
     createBoard()
     #x = Knight(1, 0, "white")
