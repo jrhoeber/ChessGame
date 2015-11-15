@@ -1,10 +1,12 @@
 from piece import *
-import serialComm/SerialComm
+import SerialComm
 
 class Board():
 
     def __init__(self):
         #Board initialization code
+        self.ser = SerialComm()
+        
         self.board = [[0 for x in xrange(8)] for x in xrange(8)]
 
         self.board[0][0] = Rook(0, 0, "white", "Rook")
@@ -118,6 +120,7 @@ class Board():
     #Pass coordinates for serial movement
     def move_piece_serial(self, x, y, newX, newY):
         self.board[x][y] = 0
+        self.ser.moveToPosition((x, y), (newX, newY))
         pass
 
     def move_piece_off_board(self, newX, newY):
