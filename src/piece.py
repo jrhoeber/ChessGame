@@ -21,29 +21,29 @@ class King(Piece):
     def __init__(self,x, y, color, name):
         super(King, self).__init__(x, y, color, name)
         #Ignoring castle for now
-        def move(self, x, y):
-            if(abs(self.x - x) == 1 or abs(self.y - y) == 1):
-                return True 
-            else:
-                return False 
+    def move(self, x, y):
+        if(abs(self.x - x) == 1 or abs(self.y - y) == 1):
+            return True 
+        else:
+            return False 
 
 class Queen(Piece):
     def __init__(self,x, y, color, name):
         super(Queen, self).__init__(x, y, color, name)
-        def move(self, x, y):
-            if(self.x == x or self.y == y or abs(self.x - x) == abs(self.y - y)):
-                return True
-            else:
-                return False 
+    def move(self, x, y):
+        if(self.x == x or self.y == y or abs(self.x - x) == abs(self.y - y)):
+            return True
+        else:
+            return False 
 
 class Rook(Piece):
     def __init__(self,x, y, color, name):
         super(Rook, self).__init__(x, y, color, name)
-        def move(self, x, y):
-            if(self.x == x or self.y == y):
-                return True
-            else:
-                return False                       
+    def move(self, x, y):
+       if(self.x == x or self.y == y):
+            return True
+       else:
+            return False                       
 
 class Bishop(Piece):
     def __init__(self,x, y, color, name):
@@ -65,9 +65,9 @@ class Knight(Piece):
     def __init__(self,x, y, color, name):
         super(Knight, self).__init__(x, y, color, name)
     def move(self, x, y):
-        if (self.x+2 or self.x-2) == x and (self.y+1 or self.y-1) == y:
+        if ((self.x+2 == x or self.x-2 == x) and (self.y+1 == y or self.y-1 == y)):
             return True
-        elif (self.y+2 or self.y-2) == y and (self.x+1 or self.x-1) == x:
+        elif ((self.y+2 == y or self.y-2 == y) and (self.x+1 == x or self.x-1 == x)):
             return True
         else:
            return False
@@ -75,25 +75,30 @@ class Knight(Piece):
 class Pawn(Piece):
     def __init__(self,x, y, color, name):
         super(Pawn, self).__init__(x, y, color, name)
-        self.firstMove = True;
+        self.moves = 0;
     def move(self, x, y):
         if self.color == "black":
             #this could be problematic
-            if self.firstMove == ((self.y-2 and self.x == x) or (y == self.y-1 and abs(x - self.x) <= 1)):
-                self.firstMove = False
+            if self.moves == 0 and ((self.y-2 and self.x == x) or (y == self.y-1 and abs(x - self.x) <= 1)):
+                self.moves += 1
                 return True
             elif y == self.y-1 and abs(x - self.x) <= 1:
+                self.moves += 1
                 return True
             else:
                 return False
         else:
-            if self.firstMove and ((y == self.y+2 and self.x == x) or (y == self.y+1 and abs(y - self.y) <= 1)):
-                self.firstMove = False
+            if self.moves == 0 and ((y == self.y+2 and self.x == x) or (y == self.y+1 and abs(y - self.y) <= 1)):
+                self.moves += 1
                 return True
             elif y == self.y+1 and abs(y - self.y) <= 1:
+                self.moves += 1
                 return True
             else:
                 return False
+    def decrementMoves(self):
+        self.moves -= 1
+
 
 
 #check if piece is move is true, if so then copy the class in that cell
@@ -103,7 +108,4 @@ class Pawn(Piece):
 # in board logic method, need to check and make sure the movement spot is 
 # not a friendly
 
-def LetterToInt(letter):
-    letters = "abcdefghi"
-    return letters.index(letter.lower())
 

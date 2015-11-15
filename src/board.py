@@ -57,20 +57,20 @@ class Board():
         elif(piece.get_name() == "Knight"):
             return self.takeLastPiece(piece, newX, newY, False)
 
-        #Diagonal (Still must check for pawn diagonal)
+        #Diagonal
         else:
-            xDir = 1 if(piece.get_x() < newX) else 0
-            yDir = 1 if(piece.get_y() < newY) else 0
+            xDir = 1 if(piece.get_x() < newX) else -1
+            yDir = 1 if(piece.get_y() < newY) else -1
             lateralDist = abs(newX - piece.get_x())
             for i in range(0, lateralDist):
                 if(i != 0 and self.board[piece.get_x() + xDir * i][piece.get_y() + yDir * i]):
                     return False
             return self.takeLastPiece(piece, newX, newY, piece.get_name() == "Pawn")
-                 
 
     def takeLastPiece(self, piece, newX, newY, isPawnDiag):
         if(isPawnDiag):
-            if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() == piece.getColor()):
+            if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() == piece.get_color()):
+                piece.decrementMoves()
                 return False 
         elif(self.board[newX][newY] != 0 and self.board[newX][newY].get_color() == piece.get_color()):
             return False
