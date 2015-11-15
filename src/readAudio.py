@@ -1,5 +1,5 @@
-import speech_recognition as sr 
-import pyaudio
+#import speech_recognition as sr 
+#import pyaudio
 
 validSet = set(["A", "B", "C", "D", "E", "F", "G", "H"]) 
 

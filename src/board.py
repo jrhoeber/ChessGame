@@ -102,7 +102,7 @@ class Board():
             if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() == piece.get_color()):
                 piece.decrementMoves()
                 return False 
-        elif(self.board[newX][newY] != 0 and self.board[newX][newY].get_color() == piece.get_color()):
+        elif(self.board[newX][newY] != 0 and (self.board[newX][newY].get_color() == piece.get_color() or piece.get_name() == "Pawn")):
             return False
         
         self.board[piece.get_x()][piece.get_y()] = 0
