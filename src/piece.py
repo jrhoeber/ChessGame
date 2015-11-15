@@ -75,21 +75,22 @@ class Knight(Piece):
 class Pawn(Piece):
     def __init__(self,x, y, color, name):
         super(Pawn, self).__init__(x, y, color, name)
-        firstMove = True;
+        self.firstMove = True;
     def move(self, x, y):
-        print self.color
         if self.color == "black":
             #this could be problematic
-            if y == self.y-2 and firstMove:
-                return true
-            elif y == self.y-1:
+            if self.firstMove == ((self.y-2 and self.x == x) or (y == self.y-1 and abs(x - self.x) <= 1)):
+                self.firstMove = False
+                return True
+            elif y == self.y-1 and abs(x - self.x) <= 1:
                 return True
             else:
                 return False
         else:
-            if y == self.y+2 and firstMove:
+            if self.firstMove and ((y == self.y+2 and self.x == x) or (y == self.y+1 and abs(y - self.y) <= 1)):
+                self.firstMove = False
                 return True
-            elif y == self.y+1:
+            elif y == self.y+1 and abs(y - self.y) <= 1:
                 return True
             else:
                 return False

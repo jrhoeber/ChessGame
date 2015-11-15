@@ -32,26 +32,32 @@ class Board():
         piece = self.board[x][y]
         if(piece == 0):
             return False
- 
-        print piece.get_color()
-        if(piece.get_color() != colorTurn):
+        elif(x == newX and y == newY):
             return False
-        
+        elif(piece.get_color() != colorTurn):
+            return False
+        elif(not piece.move(newX, newY)):
+            return False
+ 
+        #Horizontal
         if(x == newX):
             for i in range(piece.get_x(), newX):
                 if i != piece.get_x() and self.board[i][y]:
                     return False       
             return self.takeLastPiece(piece, newX, newY) 
 
+        #Vertical
         elif(y == newY):
             for i in range(piece.get_y(), newY):
                 if i != piece.get_y() and self.board[x][i]:
                     return False
             return self.takeLastPiece(piece, newX, newY)
 
+        #Knight
         elif(piece.get_name() == "Knight"):
             return self.takeLastPiece(piece, newX, newY)
 
+        #Diagonal (Still must check for pawn diagonal)
         else:
             xDir = 1 if(piece.get_x() < newX) else 0
             yDir = 1 if(piece.get_y() < newY) else 0
