@@ -1,6 +1,6 @@
 #import speech_recognition as sr 
 #import pyaudio
-
+from SerialComm import * 
 validSet = set(["A", "B", "C", "D", "E", "F", "G", "H"]) 
 
 def getMove():
@@ -26,6 +26,10 @@ def getMove():
 def convertMove(command):
   try:
     print command 
+    if command == "origin":
+        s = SerialComm()
+        s.moveToPosition([0,0],[0,0])
+        exit()
     temp = command.split()
     col1 = temp[0][0]
     col2 = temp[2][0]
