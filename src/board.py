@@ -58,10 +58,10 @@ class Board():
             if(self.board[newX][newY] == 0 or self.board[newX][newY].get_color() != piece.get_color()):
                 
                 if(abs(piece.get_x() - newX) == 2):
-                    dir = 1 if(piece.get_x() < newX) else -1
+                    dir = 1 if(piece.get_x() < newX) else - 1
                     coordinates = move_for_knight(x + dir, y, newX, newY)
                 else:
-                    dir = 1 if(piece.get_y() < newY) else -1
+                    dir = 1 if(piece.get_y() < newY) else - 1
                     coordinates = move_for_knight(x, y + dir, newX, newY)
                 if(coordinates):
                     if(self.board[newX][newY] != 0):
@@ -82,7 +82,8 @@ class Board():
                 move_piece_serial(x,  y + dir, newX, newY)
                 piece.update_coordinates(newX, newY)
             
-            move_piece_serial(coordinates[2], coordinates[3], coordinates[0], coordinates[1])
+            if(len(coordinates) == 4):
+                move_piece_serial(coordinates[2], coordinates[3], coordinates[0], coordinates[1])
 
         #Diagonal
         else:
@@ -121,6 +122,8 @@ class Board():
         pass
  
     def move_for_knight(x, y, finalX, finalY):
+        if(self.board[x][y] == 0):
+            return (1)
         for i in range(-1, 2):
             for j in range(-1, 2):
                 if(self.board[i][j] == 0 and x != finalX and j != finalY):   
