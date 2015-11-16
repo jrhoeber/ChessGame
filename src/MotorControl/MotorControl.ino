@@ -26,14 +26,6 @@ void setup() {
   
   xMotor->setSpeed(40);
   yMotor->setSpeed(40);
-  /*for(int i = 0; i < 6*displacementDiag; i++)
-      {
-        xMotor->step(1, BACKWARD, DOUBLE); 
-        yMotor->step(1, BACKWARD, DOUBLE);
-      }*/
-  
-  //xMotor->step(displacement*1, BACKWARD, DOUBLE);
-  //yMotor->step(displacement*6, BACKWARD, DOUBLE);
 }
 
 void loop() {
@@ -73,47 +65,17 @@ bool moveBy(int x, int y)
   x = abs(x); y = abs(y);
   if(abs(x) == abs(y))
   {
-    /*if(magOn){  
-      for(int i = 0; i < displacementDiagL; i++)
-      {
-        xMotor->step(1, xDir, DOUBLE); 
-        yMotor->step(1, yDir, DOUBLE);
-      }
-      for(int i = 0; i < (x-1)*displacementDiag; i++)
-      {
-        xMotor->step(1, xDir, DOUBLE); 
-        yMotor->step(1, yDir, DOUBLE);
-      }
-    }else
-    {*/
-      for(int i = 0; i < (x)*displacementDiag; i++)
-      {
-       xMotor->step(1, xDir, DOUBLE); 
-       //if(i%15 != 0){
-         yMotor->step(1, yDir, DOUBLE);
-       //}
-      }
-    //}
+    for(int i = 0; i < (x)*displacementDiag; i++)
+    {
+      xMotor->step(1, xDir, DOUBLE);
+      yMotor->step(1, yDir, DOUBLE);
+    }
   }else if(x > 0 && y == 0)
   {
-    /*if(magOn)
-    {
-      xMotor->step((x-1)*displacement+displacementL, xDir, DOUBLE);
-    }
-    else
-    {*/
       xMotor->step(x*displacement, xDir, DOUBLE);
-    //}
   } else if(y > 0 && x == 0)
   {
-    /*if(magOn)
-    {
-      yMotor->step((y-1)*displacement+displacementL, yDir, DOUBLE);
-    }
-    else
-    {*/
       yMotor->step(y*displacement, yDir, DOUBLE);
-    //}
   } else if(!magOn)
   {
     x = x*displacement;

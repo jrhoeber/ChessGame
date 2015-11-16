@@ -5,7 +5,7 @@ def LetterToInt(letter):
     letters = "abcdefghi"
     return letters.index(letter.lower())
 
-
+#TODO: Control Object creation
 if __name__ == "__main__":
     board = Board()
     colors = ("white", "black")

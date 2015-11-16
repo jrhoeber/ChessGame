@@ -1,9 +1,14 @@
-#import speech_recognition as sr 
-#import pyaudio
+import speech_recognition as sr 
+import pyaudio
 from SerialComm import * 
+
 validSet = set(["A", "B", "C", "D", "E", "F", "G", "H"]) 
 
 def getMove():
+  
+  #TODO: FORMAT With tabs/ Clean Up
+  #      Make Speech recognition Work
+
 
   #r = sr.Recognizer()
   #with sr.Microphone() as source:

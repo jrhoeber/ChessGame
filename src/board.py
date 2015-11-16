@@ -2,7 +2,7 @@ from piece import *
 from SerialComm import *
 
 class Board():
-
+    #TODO: Fix move peices off board
     def __init__(self):
         #Board initialization code
         self.ser = SerialComm()
@@ -175,12 +175,4 @@ class Board():
                     print("0"),
                 else:
                     print(self.board[j][7 - i].get_name()[0]),
-
-
-
-
-
-
-
-
 
